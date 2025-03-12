@@ -1,0 +1,14 @@
+{
+  "orgName": "LWC Training Org",
+  "edition": "Developer",
+  "features": [
+    "API",
+    "EnableSetPasswordInApi"
+  ],
+  "settings": {
+
+    "communitiesSettings": {
+      "enableNetworksEnabled": true
+    }
+  }
+}
