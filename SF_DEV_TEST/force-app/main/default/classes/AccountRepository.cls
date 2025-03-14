@@ -12,4 +12,19 @@ public with sharing class AccountRepository {
             LIMIT 100
         ];
     }
+
+    public static Account insertAccount(Account acc) {
+        if (!Schema.sObjectType.Account.isCreateable()) {
+            throw new SecurityException('Permissão de criação negada');
+        }
+        insert acc;
+        return acc;
+    }
+
+    public static void deleteAccount(Id accountId) {
+        if (!Schema.sObjectType.Account.isDeletable()) {
+            throw new SecurityException('Permissão de exclusão negada');
+        }
+        delete [SELECT Id FROM Account WHERE Id = :accountId WITH SECURITY_ENFORCED];
+    }
 }

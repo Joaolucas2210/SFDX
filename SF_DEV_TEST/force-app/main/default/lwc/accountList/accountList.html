@@ -1,18 +1,44 @@
 <template>
-    <lightning-card title="Lista de Contas" icon-name="standard:account">
-        <div class="slds-m-around_medium">
-            <template if:true={accounts}>
-                <lightning-datatable
-                    key-field="Id"
-                    data={accounts}
-                    columns={columns}
-                    hide-checkbox-column>
-                </lightning-datatable>
-            </template>
+    <!-- Modal de Criação -->
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Nova Conta</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning-input name="name" label="Nome" onchange={handleInputChange}></lightning-input>
+                    <lightning-input name="industry" label="Indústria" onchange={handleInputChange}></lightning-input>
+                    <lightning-input name="annualRevenue" type="number" label="Receita Anual" onchange={handleInputChange}></lightning-input>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancelar" onclick={closeModal}></lightning-button>
+                    <lightning-button label="Salvar" onclick={createAccount} variant="brand"></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
 
+    <!-- Conteúdo Principal -->
+    <lightning-card title="Gerenciamento de Contas" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <!-- Botão Nova Conta -->
+            <lightning-button label="Nova Conta" onclick={openNewModal} class="slds-m-bottom_small"></lightning-button>
+
+            <!-- Tabela -->
+            <lightning-datatable
+                key-field="Id"
+                data={accounts}
+                columns={columns}
+                onrowaction={handleRowAction}
+                hide-checkbox-column>
+            </lightning-datatable>
+
+            <!-- Mensagens de Erro -->
             <template if:true={error}>
                 <div class="slds-m-top_medium slds-theme_error">
-                    <p>Erro ao carregar contas: {error.body.message}</p>
+                    <p>{error}</p>
                 </div>
             </template>
         </div>
